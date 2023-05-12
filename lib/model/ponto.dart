@@ -3,43 +3,34 @@ import 'package:intl/intl.dart';
 class Ponto {
   static const nomeTabela = 'ponto';
   static const campoId = '_id';
-  static const campoLocal = 'local';
-  static const campoHora = 'hora';
-  static const campoFinalizada = 'finalizada';
+  static const campoLatitude = 'latitude';
+  static const campoLongitude = 'longitude';
+  static const campoData = 'data';
 
   int? id;
-  late String local;
-  DateTime? hora;
-  bool finalizada;
+  String? latitude;
+  String? longitude;
+  String? data;
 
   Ponto({
     this.id,
-    required this.local,
-    this.hora,
-    this.finalizada = false,
+    this.latitude,
+    this.longitude,
+    this.data,
   });
 
-  String get prazoFormatado {
-    if (hora == null) {
-      return '';
-    }
-    return DateFormat('dd/MM/yyyy').format(hora!);
-  }
-
   Map<String, dynamic> toMap() => {
-    campoId: id,
-    campoLocal: local,
-    campoHora:
-    hora == null ? null : DateFormat("yyyy-MM-dd").format(hora!),
-    campoFinalizada: finalizada ? 1 : 0,
+    campoId: id == 0 ? null : id,
+    campoLatitude: latitude,
+    campoLongitude: longitude,
+    campoData:
+    data == null ? null : data!,
   };
 
   factory Ponto.fromMap(Map<String, dynamic> map) => Ponto(
     id: map[campoId] is int ? map[campoId] : null,
-    local: map[campoLocal] is String ? map[campoLocal] : '',
-    hora: map[campoHora] is String
-        ? DateFormat("yyyy-MM-dd").parse(map[campoHora])
-        : null,
-    finalizada: map[campoFinalizada] == 1,
+    latitude: map[campoLatitude] is String ? map[campoLatitude] : '',
+    longitude: map[campoLongitude] is String ? map[campoLongitude] : '',
+    data: map[campoData] is String ? map[campoData] : null,
   );
 }

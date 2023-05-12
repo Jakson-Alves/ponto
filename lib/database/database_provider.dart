@@ -20,7 +20,7 @@ class DatabaseProvider {
       dbPath,
       version: _dbVersion,
       onCreate: _onCreate,
-      onUpgrade: _onUpgrade,
+      // onUpgrade: _onUpgrade,
     );
   }
 
@@ -28,22 +28,16 @@ class DatabaseProvider {
     await db.execute(''' 
       CREATE TABLE ${Ponto.nomeTabela} (
         ${Ponto.campoId} INTEGER PRIMARY KEY AUTOINCREMENT,
-        ${Ponto.campoLocal} TEXT NOT NULL,
-        ${Ponto.campoHora} TEXT,
-        ${Ponto.campoFinalizada} INTEGER NOT NULL DEFAULT 0
+        ${Ponto.campoLatitude} TEXT NOT NULL,
+        ${Ponto.campoLongitude} TEXT NOT NULL,
+        ${Ponto.campoData} TEXT
       );
     ''');
   }
 
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    switch (oldVersion) {
-      case 1:
-        await db.execute(''' 
-          ALTER TABLE ${Ponto.nomeTabela}
-          ADD ${Ponto.campoFinalizada} INTEGER NOT NULL DEFAULT 0;
-        ''');
-    }
-  }
+  // Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+  //
+  // }
 
   Future<void> close() async {
     if (_database != null) {

@@ -31,30 +31,16 @@ class PontoDao {
     return registrosAtualizados > 0;
   }
 
-  Future<List<Ponto>> listar({
-    String filtro = '',
-    String campoOrdenacao = Ponto.campoId,
-    bool usarOrdemDecrescente = false,
-  }) async {
-    String? where;
-    if (filtro.isNotEmpty) {
-      where = "UPPER(${Ponto.campoLocal}) LIKE '${filtro.toUpperCase()}%'";
-    }
-    var orderBy = campoOrdenacao;
-    if (usarOrdemDecrescente) {
-      orderBy += ' DESC';
-    }
+  Future<List<Ponto>> listar() async {
     final database = await databaseProvider.database;
     final resultado = await database.query(
       Ponto.nomeTabela,
       columns: [
         Ponto.campoId,
-        Ponto.campoLocal,
-        Ponto.campoHora,
-        Ponto.campoFinalizada
+        Ponto.campoLongitude,
+        Ponto.campoLatitude,
+        Ponto.campoData
       ],
-      where: where,
-      orderBy: orderBy,
     );
     return resultado.map((m) => Ponto.fromMap(m)).toList();
   }
